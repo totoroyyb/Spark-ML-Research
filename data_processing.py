@@ -5,12 +5,14 @@ import pandas as pd
 from enum import Enum
 import string
 
+# This enum is never used currently
 class NEWS_TYPES(Enum):
     REAL_TITLE = 0
     REAL_BODY = 1
     FAKE_TITLE = 2
     FAKE_BODY = 3
     
+# count the word frequency given the certain string
 def word_count(input_str: str, word_dict: dict):
     wc = input_str.split()
     table = str.maketrans('', '', string.punctuation)
@@ -20,11 +22,11 @@ def word_count(input_str: str, word_dict: dict):
             word_dict[word] += 1
         else:
             word_dict[word] = 1
-            
+
+# count the word frequency given the certain pandas Series
 def count_series(word_series, word_dict):
     for index, value in word_series.items():
         word_count(value, word_dict)
-
 
 
 # 0 stands for fake, 1 stands for true
