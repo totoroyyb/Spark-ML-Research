@@ -83,9 +83,7 @@ if __name__ == '__main__':
     model.add(Dropout(dropout_rate))
     model.add(LSTM(hidden_size, activation=args.activation))
     model.add(Dropout(dropout_rate))
-    model.add(Dense(128, activation='sigmoid'))
-    model.add(Dense(64, activation='sigmoid'))
-    model.add(Dense(2, activation='sigmoid'))
+    model.add(Dense(1, activation='sigmoid'))
 
     if args.optimizer == 'sgd':
         optimizer = SGD(learning_rate=args.learning_rate)
@@ -116,4 +114,4 @@ if __name__ == '__main__':
         file.write('confusion_matrix:{}\n'.format(str(matrix)))
         df_cm = pd.DataFrame(matrix, columns=['fake', 'truth'], index=['fake', 'truth'])
         sns.heatmap(df_cm, annot=True, fmt='g')
-        plt.show()
+        # plt.show()
