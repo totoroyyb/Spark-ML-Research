@@ -20,7 +20,7 @@ def read_csv(filepath):
     labels = df["label"]
     texts = []
     for i, row in df.iterrows():
-        # removing all specuial characters
+        # removing all special characters
         review = re.sub('[^a-zA-Z]', ' ', row['title'])
         review = review.lower()
         review = review.split()
@@ -59,7 +59,7 @@ if __name__ == '__main__':
 
 
     dataset_dir = args.dataset_dir
-    texts, labels = read_csv(os.path.join(dataset_dir, 'train.csv'))
+    texts, labels = read_csv(os.path.join(dataset_dir, 'dataset.csv'))
 
     vocab_size = args.vocab_size
     sentence_length = args.sentence_length
