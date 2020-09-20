@@ -22,27 +22,31 @@ file_name = "fake_news_lstm.py"
 
 
 def run_vocab_size_test(init, stride, rep):
+    init = int(init)
     for i in range(init, init + int(stride) * rep, int(stride)):
         os.system("python {} {} {} --name {}".format(file_name, vocab_size, i, "vocab_size-{}".format(i)))
     
 def run_sentence_length_test(init, stride, rep):
+    init = int(init)
     for i in range(init, init + int(stride) * rep, int(stride)):
         os.system("python {} {} {} --name {}".format(file_name, sentence_length, i, "sentence_length-{}".format(i)))
         
 def run_hidden_size_test(init, stride, rep):
+    init = int(init)
     for i in range(rep):
         size = init * (int(stride) ** i)
         os.system("python {} {} {} --name {}".format(file_name, hidden_size, size, "hidden_size-{}".format(size)))
         
 def run_embedding_size_test(init, stride, rep):
+    init = int(init)
     for i in range(rep):
         size = init * (int(stride) ** i)
         os.system("python {} {} {} --name {}".format(file_name, embedding_size, size, "embedding_size-{}".format(size)))
         
 def run_dropout_rate_test(init, stride, rep):
     assert init + rep * stride <= 1, "Dropout rate can be larger than 1 at the end."
-    for i in np.linespace(init, init + rep * stride, rep):
-        os.system("python {} {} {} --name {}".format(file_name, dropout_rate, i, "dropout_rate-{}".format(i)))
+    for i in np.linspace(init, init + rep * stride, rep + 1):
+        os.system("python {} {} {} --name {}".format(file_name, dropout_rate, i, "dropout_rate-{:.2f}".format(i)))
         
 def run_learning_rate_test(init, stride, rep):
     for i in range(rep):
@@ -50,6 +54,7 @@ def run_learning_rate_test(init, stride, rep):
         os.system("python {} {} {} --name {}".format(file_name, learning_rate, size, "learning_rate-{}".format(size)))
         
 def run_batch_size_test(init, stride, rep):
+    init = int(init)
     for i in range(rep):
         size = init * (int(stride) ** i)
         os.system("python {} {} {} --name {}".format(file_name, batch_size, size, "batch_size-{}".format(size)))
@@ -59,7 +64,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('--variable', default='epoch', type=str,
                         help="Indicate which variable need to be tested.")
-    parser.add_argument('--init', default=5, type=int,
+    parser.add_argument('--init', default=5, type=float,
                         help="The initial value for testing.")
     parser.add_argument('--stride', default=5, type=float,
                         help="The interval of each test.")

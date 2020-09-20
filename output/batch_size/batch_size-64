@@ -1,0 +1,13 @@
+Acc in test:0.9206500956022945
+report:
+              precision    recall  f1-score   support
+
+           0    0.90720   0.92312   0.91509      5814
+           1    0.93264   0.91852   0.92553      6738
+
+    accuracy                        0.92065     12552
+   macro avg    0.91992   0.92082   0.92031     12552
+weighted avg    0.92086   0.92065   0.92069     12552
+
+confusion_matrix:[[5367  447]
+ [ 549 6189]]
