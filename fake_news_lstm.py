@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+import tensorflow as tf
 from sklearn.metrics import confusion_matrix, accuracy_score, classification_report
 from sklearn.model_selection import train_test_split
 from tensorflow.keras.layers import Embedding, LSTM, Dense, Dropout
@@ -13,6 +14,11 @@ from tensorflow.keras.preprocessing.text import Tokenizer
 from tensorflow.keras.optimizers import Adam, SGD, Adagrad, Adadelta
 import argparse
 
+# os.environ["CUDA_VISIBLE_DEVICES"] = '0' #use GPU with ID=0
+# config = tf.ConfigProto()
+# config.gpu_options.per_process_gpu_memory_fraction = 0.5 # maximun alloc gpu 50% of MEM
+# config.gpu_options.allow_growth = True #allocate dynamically
+# sess = tf.Session(config = config)
 
 def read_csv(filepath):
     df = pd.read_csv(filepath)
@@ -51,10 +57,14 @@ if __name__ == '__main__':
                         help='The initial learning rate')
     parser.add_argument('--optimizer', default='adam', type=str,
                         help='The optimizer name.')
-    parser.add_argument('--epoch', default=4, type=int,
+    parser.add_argument('--epoch', default=10, type=int,
                         help='Total number of training epochs to perform.')
     parser.add_argument('--batch_size', default=32, type=int,
                         help='Batch size for training.')
+    parser.add_argument('--name', default='log.txt', type=str, 
+                        help="The trailing text of output file.")
+    parser.add_argument('--write', default=True, type=bool,
+                        help="Whether write out output files.")
     args = parser.parse_args()
 
 
@@ -83,6 +93,8 @@ if __name__ == '__main__':
     model.add(Dropout(dropout_rate))
     model.add(LSTM(hidden_size, activation=args.activation))
     model.add(Dropout(dropout_rate))
+    model.add(Dense(128, activation="sigmoid"))
+    model.add(Dense(32, activation="sigmoid"))
     model.add(Dense(1, activation='sigmoid'))
 
     if args.optimizer == 'sgd':
@@ -102,16 +114,18 @@ if __name__ == '__main__':
 
     if not os.path.exists(args.output_dir):
         os.makedirs(args.output_dir)
-    with open(os.path.join(args.output_dir, 'log.txt'), 'w', encoding='utf-8') as file:
-        acc = accuracy_score(y_test, y_pred)
-        print('Acc in test: {}'.format(acc))
-        file.write('Acc in test:{}\n'.format(acc))
-        report = classification_report(y_test, y_pred, digits=5)
-        print(report)
-        file.write('report:\n{}\n'.format(report))
-        matrix = confusion_matrix(y_test, y_pred)
-        print(matrix)
-        file.write('confusion_matrix:{}\n'.format(str(matrix)))
-        df_cm = pd.DataFrame(matrix, columns=['fake', 'truth'], index=['fake', 'truth'])
-        sns.heatmap(df_cm, annot=True, fmt='g')
-        # plt.show()
+        
+    if args.write:
+        with open(os.path.join(args.output_dir, args.name), 'w', encoding='utf-8') as file:
+            acc = accuracy_score(y_test, y_pred)
+            # print('Acc in test: {}'.format(acc))
+            file.write('Acc in test:{}\n'.format(acc))
+            report = classification_report(y_test, y_pred, digits=5)
+            # print(report)
+            file.write('report:\n{}\n'.format(report))
+            matrix = confusion_matrix(y_test, y_pred)
+            # print(matrix)
+            file.write('confusion_matrix:{}\n'.format(str(matrix)))
+            df_cm = pd.DataFrame(matrix, columns=['fake', 'truth'], index=['fake', 'truth'])
+            sns.heatmap(df_cm, annot=True, fmt='g')
+            # plt.show()
