@@ -88,7 +88,9 @@ For example, if you want to generate the graph of all `vocab_size` results, you 
 
 ### Output
 
-It will automatically place the output image at the same level of data files, with `png` extension.
+It will automatically place the output image at the same level of data files as `[variable]_[type].png`.
+
+For example, if you run `python gene_plot.py --variable vocab_size --type line`, it will generate `vocab_size_line.png`.
 
 ### Note
 
