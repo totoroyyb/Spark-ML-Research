@@ -73,6 +73,8 @@ if __name__ == "__main__":
         upper = max(values) + 0.01
         lower = min(values) - 0.01
         stride = 0.005
+        if upper - lower >= 0.4:
+            stride = 0.05
         plt.ylim(lower, upper)
         plt.yticks(np.arange(lower, upper, step=stride))
         
