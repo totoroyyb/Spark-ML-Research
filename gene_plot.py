@@ -82,7 +82,7 @@ if __name__ == "__main__":
         plt.plot(params, values)
     
     if args.save:
-        plot_path = os.path.join(data_path, "{}-{}.png".format(args.variable, args.type))
+        plot_path = os.path.join(data_path, "{}_{}.png".format(args.variable, args.type))
         plt.savefig(plot_path, bbox_inches='tight',dpi=100)
         print("Plot has been saved to {}.".format(plot_path))
     
